@@ -73,4 +73,35 @@ class BPNeuralNetwork:
             self.output_cells[k] = sigmoid(total, True)
         return self.output_cells[:]
 
-    
+    def back_propagate(self, case, label, learn, correct):
+        # 完成一次前向传播
+        self.predict(case)
+        # 计算out误差
+        output_deltas = [0.0] * self.output_n
+        for o in range(self.output_n):
+            error = label[o] - self.output_cells[o]
+            output_deltas[o] = sigmoid(self.output_cells[o], False) * error
+        # 计算hidden误差
+        hidden_deltas = [0.0] * self.hidden_n
+        for h in range(self.hidden_n):
+            error = 0.0
+            for o in range(self.output_n):
+                error += output_deltas[o] * self.output_weight[h][o]
+            hidden_deltas[h] = sigmoid(self.hidden_cells[h]) * error
+        # 更新权重
+        for h in range(self.hidden_n):
+            for o in range(self.output_n):
+                change = output_deltas[o] * self.hidden_cells[h]
+                self.output_weight[h][o] += learn * change + correct * self.output_correction[h][o]
+                self.output_correction[h][o] = change
+
+        for i in range(self.input_n):
+            for h in range(self.hidden_n):
+                change = hidden_deltas[h] * self.input_cells[i]
+                self.input_weight[i][h] += learn * change + correct * self.input_correction[i][h]
+                self.input_correction[i][h] = change
+        # 全局损失
+        error = 0.0
+        for o in range(len(label)):
+            error += 0.5 * (label[o] - self.output_cells[o]) ** 2  # 均方误差
+        return error
