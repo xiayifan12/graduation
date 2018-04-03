@@ -1,13 +1,15 @@
-import numpy
-import random
 import math
+import random
+import xlrd
+from bp.Setting.basesetting import PARAMETERS
 
 
+# 工具函数定义
 def rand(a, b):
     return (b - a) * random.random() + a
 
 
-def make_matrix(m: object, n: object, fill: object = 0.0) -> object:  # 创造矩阵
+def make_matrix(m, n, fill=0.0):  # 创造矩阵
     mat = []
     for i in range(m):
         mat.append([fill] * n)
@@ -21,6 +23,7 @@ def sigmoid(x, con):  # 激励函数以及其导函数，con参数为false时为
         return x * (1 - x)
 
 
+# 核心bp神经网络类
 class BPNeuralNetwork:
     def __init__(self):
         self.input_n = 0
@@ -105,3 +108,62 @@ class BPNeuralNetwork:
         for o in range(len(label)):
             error += 0.5 * (label[o] - self.output_cells[o]) ** 2  # 均方误差
         return error
+
+    def train(self, cases, labels, limit=1000, learn=0.5, correct=0.1):
+        for j in range(limit):
+            error = 0.0
+            for i in range(len(cases)):
+                label = labels[i]
+                case = cases[i]
+                error += self.back_propagate(case, label, learn, correct)
+
+    def test(self):
+        cases = []
+        labels = []
+        self.start(PARAMETERS.NUM_OF_INPUT, PARAMETERS.NUM_OF_HIDDEN, PARAMETERS.NUM_OF_OUTPUT)
+        self.train(cases, labels, 10000, PARAMETERS.LEARNING_RATE, PARAMETERS.CORRECT_RATE)
+
+    def forecase(self, delay, shake, packet, bandwidth):
+        case = [delay, shake, packet, bandwidth]
+        return self.predict(case)
+
+
+if __name__ != '__main__':
+    QoEassmodel = BPNeuralNetwork()
+    QoEassmodel.test()
+    print("********************************")
+    print("神经网络训练完毕! QoE评价模型准备就绪！")
+    print("********************************")
+    while True:
+        delay = input("请输入网络延迟：")
+        shake = input("请输入网络抖动:")
+        packet = input("请输入丢包率:")
+        bandwidth = input("请输入网络带宽:")
+        print("***********少女祈祷中************")
+        print("QoE评价结果为：")
+        print(QoEassmodel.forecase(delay, shake, packet, bandwidth))
+        print("***********少女祈祷中************")
+else:
+    print("hello")
+    workbook = xlrd.open_workbook('./static/1.xlsx')  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
+    sheet = workbook.sheet_by_index(0)  # 取excel文件的第一张表
+    row = sheet.nrows  # 记录行列数
+    col = sheet.ncols
+    casesRaw = []
+    labelsRaw = []
+    for i in range(row):  # 取每行元素 制作case 与 label
+        caseRaw = []
+        labelRaw = []
+        delayInEx = sheet.row(i)[0]
+        shakeInEx = sheet.row(i)[1]
+        packetInEx = sheet.row(i)[2]
+        bandwidthInEx = sheet.row(i)[3]
+        labelInEx = sheet.row(i)[4]
+        caseRaw.append(delayInEx)
+        caseRaw.append(shakeInEx)
+        caseRaw.append(packetInEx)
+        caseRaw.append(bandwidthInEx)
+        casesRaw.append(caseRaw)
+        labelRaw.append(labelInEx)
+        labelsRaw.append(labelRaw)
+    print(casesRaw)
