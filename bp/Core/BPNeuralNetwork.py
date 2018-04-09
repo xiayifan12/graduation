@@ -58,7 +58,8 @@ class BPNeuralNetwork:
             total = 0.0
             for j in range(self.hidden_n):
                 total += self.hidden_cells[j] * self.output_weight[j][k]
-            self.output_cells[k] = sigmoid(total, True)
+            #self.output_cells[k] = sigmoid(total, True)  取消输出层的激励函数
+            self.output_cells[k] = total
         return self.output_cells[:]
 
     def back_propagate(self, case, label, learn, correct):
@@ -68,7 +69,8 @@ class BPNeuralNetwork:
         output_deltas = [0.0] * self.output_n
         for o in range(self.output_n):
             error = label[o] - self.output_cells[o]
-            output_deltas[o] = sigmoid(self.output_cells[o], False) * error
+            #output_deltas[o] = sigmoid(self.output_cells[o], False) * error  反响传播同样处理
+            output_deltas[o] = error
         # 计算hidden误差
         hidden_deltas = [0.0] * self.hidden_n
         for h in range(self.hidden_n):

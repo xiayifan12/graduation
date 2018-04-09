@@ -1,7 +1,6 @@
 from bp.Util.excelHandle import GetDataSetAndLabelsFormExcel
 from bp.Core.BPNeuralNetwork import BPNeuralNetwork
 
-
 if __name__ != '__main__':
     QoEassmodel = BPNeuralNetwork()
     cases = GetDataSetAndLabelsFormExcel()[0]
@@ -28,7 +27,6 @@ else:
     QoeModel = BPNeuralNetwork()
     cases = GetDataSetAndLabelsFormExcel()[0]
     labels = GetDataSetAndLabelsFormExcel()[1]
-    print(cases[0][1])
     QoeModel.test(cases, labels)
     print("********************************")
     print("神经网络训练完毕! QoE评价模型准备就绪！")
@@ -37,4 +35,4 @@ else:
     b = input("2:")
     c = input("3:")
     d = input("4:")
-    print(QoeModel.forecase(float(a),float(b),float(c),float(d)))
+    print(QoeModel.forecase(float(a), float(b), float(c), float(d)))
