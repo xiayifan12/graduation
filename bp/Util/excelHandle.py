@@ -8,10 +8,12 @@ import openpyxl
 '''
 DataSetPath = './static/1.xlsx'
 WidthPath = './static/width.xlsx'
+DataSetPathTest = '../static/1.xlsx'
+
 
 
 def GetDataSetAndLabelsFormExcel():
-    workbook = xlrd.open_workbook(DataSetPath)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
+    workbook = xlrd.open_workbook(DataSetPathTest)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
     sheet = workbook.sheet_by_index(0)  # 取excel文件的第一张表
     row = sheet.nrows  # 记录行列数
     casesRaw = []

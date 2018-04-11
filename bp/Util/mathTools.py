@@ -1,5 +1,6 @@
 import math
 import random
+from bp.Setting.basesetting import SIGMOID_WEIGH
 
 '''
 @Author:xiayifan
@@ -20,9 +21,10 @@ def make_matrix(m, n, fill=0.0):  # 创造矩阵m x n
     return mat
 
 
-def sigmoid(x, con):  # 激励函数以及其导函数，con参数为false时为导函数
+def sigmoid(x, con=True):  # 激励函数以及其导函数，con参数为false时为导函数
     if con:
         re = 1.0 / (1.0 + math.exp(-x))
         return re
     else:
         return x * (1 - x)
+
