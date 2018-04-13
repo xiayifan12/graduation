@@ -1,3 +1,4 @@
+from bp.Setting.basesetting import *
 '''
 @Author:xiayifan
 @Function: 1.对读取的原始文件输入进行归一化处理
@@ -46,12 +47,12 @@ def MaxMinNormalization(casesR):
 '''
 @函数功能：量化qoe数据
 @QoE划分分类规定：
-                      数值               服务质量
-                0     --- 10000            很差
-                10001  --- 15000           较差
-                15001 --- 20000            中档
-                20000 ---- 25000           较好
-                25001以上                  很好
+                      数值                           服务质量
+                            --- VERY_WORSE            很差
+                VERY_WORSE  --- NORMAL                较差
+                NORMAL      --- GOOD                  中档
+                GOOD        ---- VERY_GOOD            较好
+                VERY_GOOD   ----                      很好
 
         @Input：
                 type: list
@@ -69,15 +70,15 @@ def HandleLabel(labelsR):
     labels = []
     for i in range(len(labelsR)):
         label = []
-        if labelsR[i][0] <= 10000:
+        if labelsR[i][0] <= VERY_WORSE:
             label = [1, 0, 0, 0, 0]
-        if 10000 < labelsR[i][0] <= 15000:
+        if VERY_WORSE < labelsR[i][0] <= NORMAL:
             label = [0, 1, 0, 0, 0]
-        if 15000 < labelsR[i][0] <= 20000:
+        if NORMAL < labelsR[i][0] <= GOOD:
             label = [0, 0, 1, 0, 0]
-        if 20000 < labelsR[i][0] <= 25000:
+        if GOOD < labelsR[i][0] <= VERY_GOOD:
             label = [0, 0, 0, 1, 0]
-        if labelsR[i][0] > 25000:
+        if labelsR[i][0] > VERY_GOOD:
             label = [0, 0, 0, 0, 1]
         labels.append(label)
     return labels

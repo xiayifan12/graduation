@@ -1,6 +1,8 @@
 import numpy as np
 
-
+'''
+一元感知器学习code
+'''
 class perceptron:
     def __init__(self, learing=0.1, range=10):
         self.learning = learing

@@ -1,7 +1,8 @@
 from bp.Util.mathTools import rand, make_matrix, sigmoid
 from bp.Setting.basesetting import NUM_OF_OUTPUT, NUM_OF_HIDDEN, NUM_OF_INPUT, LEARNING_RATE, CORRECT_RATE, RANGE_UNDER, \
-    RANGE_UPDER, FINAL_ERROR
+    RANGE_UPDER, FINAL_ERROR,MAX_TIME
 from bp.Util.DataHandle import HandleLabel, MaxMinNormalization
+from bp.Util.VisualizationTools import showGraphWithIters
 
 '''
 @Author:xiayifan
@@ -46,8 +47,8 @@ class BPNeuralNetwork:
             for o in range(self.output_n):
                 self.output_weight[h][o] = rand(RANGE_UNDER, RANGE_UPDER)
         # 初始化修正矩阵
-        # self.input_correction = make_matrix(self.input_n, self.hidden_n)
-        # self.output_correction = make_matrix(self.hidden_n, self.output_n)
+        self.input_correction = make_matrix(self.input_n, self.hidden_n)
+        self.output_correction = make_matrix(self.hidden_n, self.output_n)
 
     def predict(self, inputs):  # 完成一次正向传播
         for i in range(self.input_n - 1):
@@ -87,16 +88,16 @@ class BPNeuralNetwork:
         for h in range(self.hidden_n):
             for o in range(self.output_n):
                 change = output_deltas[o] * self.hidden_cells[h]
-                self.output_weight[h][o] += learn * change
-                # self.output_weight[h][o] += learn * change + correct * self.output_correction[h][o]
-                # self.output_correction[h][o] = change
+                # self.output_weight[h][o] += learn * change
+                self.output_weight[h][o] += learn * change + correct * self.output_correction[h][o]
+                self.output_correction[h][o] = change
 
         for i in range(self.input_n):
             for h in range(self.hidden_n):
                 change = hidden_deltas[h] * self.input_cells[i]
-                self.input_weight[i][h] += learn * change
-                # self.input_weight[i][h] += learn * change + correct * self.input_correction[i][h]
-                # self.input_correction[i][h] = change
+                # self.input_weight[i][h] += learn * change
+                self.input_weight[i][h] += learn * change + correct * self.input_correction[i][h]
+                self.input_correction[i][h] = change
         # 全局损失
         error = 0.0
         for o in range(len(label)):
@@ -115,13 +116,14 @@ class BPNeuralNetwork:
                 label = labels[i]
                 case = cases[i]
                 error += self.back_propagate(case, label, learn, correct)
-            self.error_history.append(error)
+            error_in_sample = error/len(cases)
+            self.error_history.append(error_in_sample)
             if error <= FINAL_ERROR:
                 break
 
     def test(self, cases, labels):
         self.start(NUM_OF_INPUT, NUM_OF_HIDDEN, NUM_OF_OUTPUT)
-        self.train(cases, labels, 10000, LEARNING_RATE, CORRECT_RATE)
+        self.train(cases, labels, MAX_TIME, LEARNING_RATE, CORRECT_RATE)
 
     def forecase(self, delay, shake, packet, bandwidth):
         caseR = [delay, shake, packet, bandwidth]
@@ -151,3 +153,7 @@ class BPNeuralNetwork:
                 if i == 4:
                     Qoe = "很好"
         return Qoe
+
+    def showErrorGraph(self):
+        print(min(self.error_history))
+        showGraphWithIters(self.error_history)
