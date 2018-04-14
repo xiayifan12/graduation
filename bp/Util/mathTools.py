@@ -1,6 +1,5 @@
 import math
 import random
-from bp.Setting.basesetting import SIGMOID_WEIGH
 
 '''
 @Author:xiayifan

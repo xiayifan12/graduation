@@ -7,12 +7,12 @@ if __name__ == '__main__':
     labelsR = GetDataSetAndLabelsFormExcel()[1]
     QoeModel.test(casesR, labelsR)
     QoeModel.showErrorGraph()
-    while True:
-        a = input("1:")
-        b = input("2:")
-        c = input("3:")
-        d = input("4:")
-        print(QoeModel.forecase(float(a), float(b), float(c), float(d)))
-        o = input("over?")
-        if o == 'yes':
-            break
+    # while True:
+    #     a = input("1:")
+    #     b = input("2:")
+    #     c = input("3:")
+    #     d = input("4:")
+    #     print(QoeModel.forecase(float(a), float(b), float(c), float(d)))
+    #     o = input("over?")
+    #     if o == 'yes':
+    #         break
