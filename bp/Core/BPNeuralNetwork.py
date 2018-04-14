@@ -8,6 +8,7 @@ from bp.Util.VisualizationTools import showGraphWithIters
 @Author:xiayifan
 @Function:该模块定义了核心的bp神经网路类
 @Update : 4/11 改变思路，将回归问题转换为分类问题
+          4/14 准备在此分支重构代码
 '''
 
 
