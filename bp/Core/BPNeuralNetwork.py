@@ -1,14 +1,14 @@
 from bp.Util.mathTools import rand, make_matrix, sigmoid
 from bp.Setting.basesetting import NUM_OF_OUTPUT, NUM_OF_HIDDEN, NUM_OF_INPUT, LEARNING_RATE, CORRECT_RATE, RANGE_UNDER, \
-    RANGE_UPDER, FINAL_ERROR,MAX_TIME
+    RANGE_UPDER, FINAL_ERROR, MAX_TIME
 from bp.Util.DataHandle import HandleLabel, MaxMinNormalization
 from bp.Util.VisualizationTools import showGraphWithIters
+from random import shuffle
 
 '''
 @Author:xiayifan
 @Function:该模块定义了核心的bp神经网路类
 @Update : 4/11 改变思路，将回归问题转换为分类问题
-          4/14 准备在此分支重构代码
 '''
 
 
@@ -102,7 +102,7 @@ class BPNeuralNetwork:
         # 全局损失
         error = 0.0
         for o in range(len(label)):
-            error += 0.5 * (label[o] - self.output_cells[o]) ** 2  # 均方误差
+            error += (label[o] - self.output_cells[o]) ** 2  # 均方误差
         return error
 
     def train(self, casesR, labelsR, limit=1000, learn=0.5, correct=0.1):
@@ -117,7 +117,7 @@ class BPNeuralNetwork:
                 label = labels[i]
                 case = cases[i]
                 error += self.back_propagate(case, label, learn, correct)
-            error_in_sample = error/len(cases)
+            error_in_sample = 0.5 * (error / len(cases))
             self.error_history.append(error_in_sample)
             if error <= FINAL_ERROR:
                 break

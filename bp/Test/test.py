@@ -1,8 +1,9 @@
 from bp.Core.BPNeuralNetwork import BPNeuralNetwork
 from bp.Util.excelHandle import GetDataSetAndLabelsFormExcel
+import bp.Core.CopyByBp as cp
 
 if __name__ == '__main__':
-    QoeModel = BPNeuralNetwork()
+    QoeModel = cp.BPNeuralNetwork()
     casesR = GetDataSetAndLabelsFormExcel()[0]
     labelsR = GetDataSetAndLabelsFormExcel()[1]
     QoeModel.test(casesR, labelsR)
