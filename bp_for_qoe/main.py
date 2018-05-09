@@ -1,5 +1,5 @@
 from bp_for_qoe.Util.excelHandle import GetDataSetAndLabelsFormExcel
-from bp_for_qoe.Core.BPNeuralNetwork import BPNeuralNetwork
+from bp_for_qoe.Core.QoEAss import BPNeuralNetwork
 
 if __name__ != '__main__':
     QoEassmodel = BPNeuralNetwork()

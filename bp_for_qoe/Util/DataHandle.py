@@ -1,4 +1,5 @@
 from bp_for_qoe.Setting.basesetting import *
+
 '''
 @Author:xiayifan
 @Function: 1.对读取的原始文件输入进行归一化处理
@@ -64,6 +65,23 @@ def MaxMinNormalization(casesR):
                 value: 1表示选中  0表示未选中
                        五项中只有一项可以被选中
 '''
+
+
+def reMaxMinNormalization(labelR, max, min):
+    return (max - min) * labelR + min
+
+
+def useMaxMinNormalizationHandle(labelR):
+    labs = []
+    for l in labelR:
+        labs.append(l[0])
+    maxL = max(labs)
+    minL = min(labs)
+    labels = []
+    for l in labs:
+        y = (l - minL) / (maxL - minL)
+        labels.append([y])
+    return [labels, maxL, minL]
 
 
 def HandleLabel(labelsR):

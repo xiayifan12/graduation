@@ -7,9 +7,9 @@ import openpyxl
 
 '''
 DataSetPath = './static/1.xlsx'
-WidthPath = './static/width.xlsx'
+WidthPath = './static/save.xlsx'
 DataSetPathTest = '../static/1.xlsx'
-
+SavePathTest = '../static/save.xlsx'
 
 
 def GetDataSetAndLabelsFormExcel():
@@ -36,25 +36,39 @@ def GetDataSetAndLabelsFormExcel():
     return [casesRaw, labelsRaw]
 
 
-def GetWidthFromExcel():
-    workbook = xlrd.open_workbook(WidthPath)
+def GetNNFromExcel():
+    workbook = xlrd.open_workbook(SavePathTest)
     sheet = workbook.sheet_by_index(0)
-    row = sheet.nrows
-    col = sheet.ncols
-    mat = []
-    for i in range(row):
-        hang = []
-        for j in range(col):
-            hang.append(sheet.row(i)[j])
-        mat.append(hang)
+    # row = sheet.nrows
+    # col = sheet.ncols
+    mat = [sheet.row_values(0), sheet.row_values(1), sheet.row_values(2), sheet.row_values(3)]
+    # for i in range(row):
+    #     hang = []
+    #     for j in range(col):
+    #         hang.append(sheet.row(i)[j])
+    #     mat.append(hang)
     return mat
 
 
-def InsertWidthToExcel(width):
+def InsertNNToExcel(width, atrnorm, labnorm):
     workbook = openpyxl.Workbook()
     sheetW = workbook.active
     sheetW.title = 'width'
-    for i in range(len(width)):
-        for j in range(len(width[0])):
-            sheetW.cell(row=i + 1, colum=j + 1, value=width[i][j])
-    sheetW.save(WidthPath)
+    k = 0
+    for wd in width:
+        k = k + 1
+        m = 1
+        for i in range(len(wd)):
+            for j in range(len(wd[i])):
+                sheetW.cell(row=k, column=m, value=wd[i][j])
+                m = m + 1
+    l = 1
+    k = 3
+    for no in atrnorm:
+        for i in no:
+            sheetW.cell(row=k, column=l, value=i)
+            l += 1
+    k = 4
+    sheetW.cell(row=k, column=1, value=labnorm[0])
+    sheetW.cell(row=k, column=2, value=labnorm[1])
+    workbook.save(SavePathTest)
