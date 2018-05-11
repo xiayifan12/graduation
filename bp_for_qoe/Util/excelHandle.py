@@ -9,6 +9,7 @@ import openpyxl
 DataSetPath = './static/1.xlsx'
 WidthPath = './static/save.xlsx'
 DataSetPathTest = '../static/1.xlsx'
+SavePath = './bp_for_qoe/static/save.xlsx'
 SavePathTest = '../static/save.xlsx'
 
 
@@ -37,7 +38,7 @@ def GetDataSetAndLabelsFormExcel():
 
 
 def GetNNFromExcel():
-    workbook = xlrd.open_workbook(SavePathTest)
+    workbook = xlrd.open_workbook(SavePath)
     sheet = workbook.sheet_by_index(0)
     # row = sheet.nrows
     # col = sheet.ncols

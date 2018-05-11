@@ -140,9 +140,11 @@ class BPNeuralNetwork:
         case = []
         for i in range(len(caseR)):
             x = (caseR[i] - self.minAtrNorm[i]) / (self.maxAtrNorm[i] - self.minAtrNorm[i])
+            if x < 0:
+                x = 0
             case.append(x)
         self.predict(case)
-        result = self.output_cells[0]
+        result = reMaxMinNormalization(self.output_cells[0], self.maxLabNorm, self.minLabNorm)
         return result
 
     def showErrorGraph(self):
@@ -170,7 +172,7 @@ class BPNeuralNetwork:
         for i in range(NUM_OF_INPUT):
             self.maxAtrNorm.append(matRaw[2][i])
 
-        for i in range(3, NUM_OF_INPUT+3):
+        for i in range(4, NUM_OF_INPUT + 4):
             self.minAtrNorm.append(matRaw[2][i])
 
         self.maxLabNorm = matRaw[3][0]

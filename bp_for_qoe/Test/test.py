@@ -4,11 +4,11 @@ import bp_for_qoe.Core.multiplehidden as cp
 
 if __name__ == '__main__':
     QoeModel = BPNeuralNetwork()
-    # casesR = GetDataSetAndLabelsFormExcel()[0]
-    # labelsR = GetDataSetAndLabelsFormExcel()[1]
-    # QoeModel.test(casesR, labelsR)
-    # QoeModel.showErrorGraph()
-    QoeModel.loadNN()
+    casesR = GetDataSetAndLabelsFormExcel()[0]
+    labelsR = GetDataSetAndLabelsFormExcel()[1]
+    QoeModel.test(casesR, labelsR)
+    QoeModel.showErrorGraph()
+    QoeModel.saveNN()
     # while True:
     #     a = input("1:")
     #     b = input("2:")
