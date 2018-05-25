@@ -11,6 +11,13 @@ class graphNodes:
         self.jitter = 0.0
 
 
+def makeGraph(size):
+    mat = []
+    for i in range(size):
+        p = []
+        mat.append(p)
+
+
 def getGraph():
     workbook = xlrd.open_workbook(PATH)
     sheet = workbook.sheet_by_index(0)

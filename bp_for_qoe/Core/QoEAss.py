@@ -135,8 +135,8 @@ class BPNeuralNetwork:
         self.start(NUM_OF_INPUT, NUM_OF_HIDDEN, NUM_OF_OUTPUT)
         self.train(cases, labels, MAX_TIME, LEARNING_RATE, CORRECT_RATE)
 
-    def forecase(self, delay, shake, packet, bandwidth):
-        caseR = [delay, shake, packet, bandwidth]
+    def forecase(self, delay, bandwidth, packet, jitter):
+        caseR = [delay, bandwidth, packet, jitter]
         case = []
         for i in range(len(caseR)):
             x = (caseR[i] - self.minAtrNorm[i]) / (self.maxAtrNorm[i] - self.minAtrNorm[i])
@@ -177,3 +177,22 @@ class BPNeuralNetwork:
 
         self.maxLabNorm = matRaw[3][0]
         self.minLabNorm = matRaw[3][1]
+
+    def verify(self, caseR, labelR):
+        self.loadNN()
+        count = 0
+        right = 0
+        for i in range(len(caseR)):
+            count += 1
+            case = caseR[i]
+            label = labelR[i][0]
+            output = self.forecase(case[0], case[1], case[2], case[3])
+            o = round(output, 2)
+            label = round(label, 2)
+            if o == label:
+                right += 1
+        # right = 1652
+        # count = 2000
+        p = right / count
+        p = p * 100
+        print("测试准确率：" + str(right) + "/" + str(count) + "----" + str(p) + "%")

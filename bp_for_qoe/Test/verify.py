@@ -5,6 +5,4 @@ if __name__ == '__main__':
     QoeModel = BPNeuralNetwork()
     casesR = GetDataSetAndLabelsFormExcel()[0]
     labelsR = GetDataSetAndLabelsFormExcel()[1]
-    QoeModel.test(casesR, labelsR)
-    QoeModel.showErrorGraph()
-    QoeModel.saveNN()
+    QoeModel.verify(casesR, labelsR)

@@ -8,13 +8,38 @@ import openpyxl
 '''
 DataSetPath = './static/1.xlsx'
 WidthPath = './static/save.xlsx'
-DataSetPathTest = '../static/1.xlsx'
-SavePath = './bp_for_qoe/static/save.xlsx'
-SavePathTest = '../static/save.xlsx'
+DataSetPathTest = '../static/2.xlsx'
+VernifiyPath = '../static/3.xlsx'
+SavePath = './bp_for_qoe/static/save1.xlsx'
+SavePathTest = '../static/save3.xlsx'
 
 
 def GetDataSetAndLabelsFormExcel():
-    workbook = xlrd.open_workbook(DataSetPathTest)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
+    workbook = xlrd.open_workbook(SavePath)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
+    sheet = workbook.sheet_by_index(0)  # 取excel文件的第一张表
+    row = sheet.nrows  # 记录行列数
+    casesRaw = []
+    labelsRaw = []
+    for i in range(row):  # 取每行元素 制作case 与 label
+        caseRaw = []
+        labelRaw = []
+        delayInEx = sheet.row(i)[0].value
+        shakeInEx = sheet.row(i)[1].value
+        packetInEx = sheet.row(i)[2].value
+        bandwidthInEx = sheet.row(i)[3].value
+        labelInEx = sheet.row(i)[4].value
+        caseRaw.append(delayInEx)
+        caseRaw.append(shakeInEx)
+        caseRaw.append(packetInEx)
+        caseRaw.append(bandwidthInEx)
+        casesRaw.append(caseRaw)
+        labelRaw.append(labelInEx)
+        labelsRaw.append(labelRaw)
+    return [casesRaw, labelsRaw]
+
+
+def GetVerifitySetAndLabelsFormExcel():
+    workbook = xlrd.open_workbook(VernifiyPath)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
     sheet = workbook.sheet_by_index(0)  # 取excel文件的第一张表
     row = sheet.nrows  # 记录行列数
     casesRaw = []

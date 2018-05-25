@@ -16,7 +16,8 @@ def genetic(graph, topy, src, dst):
     individual.QoEassInit()
     bestindivitions = []
     initpop = create_pop(graph, topy, src, dst)  # 随机一点！！！
-    pop = sample(initpop,POP_SIZE)
+    seed()
+    pop = sample(initpop, POP_SIZE)
     for i in range(MAX_GENARATION):
         sortkey = attrgetter('phenotype')
         bestsortlist = pop
@@ -25,24 +26,26 @@ def genetic(graph, topy, src, dst):
         bestindivitions.append(bestindivition)
         # if bestindivition.phenotype > xxxx
         #     break
-        selecpop = selection(initpop)
+        selecpop = selection(pop)
         shuffle(selecpop)
         cropop = crossover(selecpop, graph, topy)
-        cropop.append(bestindivition)
+        # cropop.append(bestindivition)
         mutapop = mutation(cropop, graph, topy)
         pop = mutapop
+        pop.append(bestindivition)
     showlist = []
-    sortkey = attrgetter('phenotype')
-    bestindivitions.sort(key=sortkey)
     for i in bestindivitions:
         showlist.append(i.phenotype)
     print(max(showlist))
+    sortkey = attrgetter('phenotype')
+    bestindivitions.sort(key=sortkey, reverse=True)
     print(bestindivitions[0].genotype)
     plt.plot(showlist)
     plt.title('Best QoE in pop')
     plt.xlabel('pop_num')
     plt.ylabel('QoE by MOS')
-    plt.ylim(4.600, 4.800)
+    plt.ylim(4.600, 5.000)
+    plt.xlim(0, 20)
     plt.show()
 
 
@@ -273,18 +276,30 @@ def crossover(pop, graph, topy):
 '''
 
 
-def dfsForMutation(node, dst, graph, visited, orig):
-    path = None
+def dfsForMutation(node, dst, graph, visited, orig, src):
+    path = []
     visited.append(node)
     V = visited.copy()
     if node == dst:
-        path = visited.reverse()
+        index = 0
+        for i in range(len(V)):
+            if V[i] != src:
+                continue
+            else:
+                index = i
+                break
+        V = V[index:]
+        V.reverse()
+        path = V.copy()
+        orig.append(src)
         if path != orig:
             return path
     for i in range(len(graph[node])):
         if graph[node][i] == 1 and i not in visited:
-            path = dfsForMutation(i, dst, graph, V, orig)
-            if path is not None:
+            V = visited.copy()
+            path = dfsForMutation(i, dst, graph, V, orig, src)
+            V = visited.copy()
+            if path:
                 break
     return path
 
@@ -304,14 +319,17 @@ def mutation(pop, graph, topy):
                         break
                 orilist = i.genotype[:index]
                 visited = i.genotype[index + 1:]
-                path = dfsForMutation(gen, i.genotype[0], topy, visited, orilist)
-                if path is not None:
+                addcp = visited.copy()
+                path = dfsForMutation(gen, i.genotype[0], topy, visited, orilist, gen)
+                for p in addcp:
+                    path.append(p)
+                if path:
                     newi = individual()
                     newi.start(path, graph)
                     newpop.append(newi)
                     break
                 seleclist.remove(gen)
-            if seleclist is None:
+            if not seleclist:
                 newpop.append(i)
         else:
             newpop.append(i)
