@@ -1,4 +1,6 @@
 import xlrd
+from random import randint, seed, random
+from sdn_and_router.Route.base import *
 
 PATH = './sdn_and_router/static/hushuo.xlsx'
 
@@ -58,3 +60,17 @@ def getIFs(path, graph):
         if graph[path[i]][path[i + 1]].width < wid:
             wid = graph[path[i]][path[i + 1]].width
     return [delay, wid, packet, jitter]
+
+
+def randomGraph(graph, topy):
+    for i in range(len(topy)):
+        for j in range(len(topy[i])):
+            if topy[i][j] == 1:
+                graph[i][j].delay = randint(DELAY_DOWN, DELAY_UP)
+                graph[i][j].jitter = randint(JITTER_DOWN, JITTER_UP)
+                graph[i][j].width = randint(WIDTH_DOWN, WIDTH_UP)
+                seed()
+                if random() < 0.8:
+                    graph[i][j].packet = PACKET_DOWN
+                else:
+                    graph[i][j].packet = PACKET_UP

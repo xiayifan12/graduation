@@ -136,6 +136,7 @@ class BPNeuralNetwork:
         self.train(cases, labels, MAX_TIME, LEARNING_RATE, CORRECT_RATE)
 
     def forecase(self, delay, bandwidth, packet, jitter):
+
         caseR = [delay, bandwidth, packet, jitter]
         case = []
         for i in range(len(caseR)):
@@ -145,6 +146,7 @@ class BPNeuralNetwork:
             case.append(x)
         self.predict(case)
         result = reMaxMinNormalization(self.output_cells[0], self.maxLabNorm, self.minLabNorm)
+        # result -= 0.05
         return result
 
     def showErrorGraph(self):

@@ -44,8 +44,8 @@ def genetic(graph, topy, src, dst):
     plt.title('Best QoE in pop')
     plt.xlabel('pop_num')
     plt.ylabel('QoE by MOS')
-    plt.ylim(4.600, 5.000)
-    plt.xlim(0, 20)
+    plt.ylim(4.000, 5.000)
+    plt.xlim(0, 50)
     plt.show()
 
 
@@ -82,6 +82,12 @@ class individual:
     def countRange(self, left, right):
         self.leftFit = left
         self.rightFit = right
+
+    def showPathAndQoE(self):
+        print(self.genotype)
+        print(self.phenotype)
+        print('\n')
+
 
 
 '''
@@ -178,7 +184,7 @@ def switchByPoint(father, mother, fp, mp, graph):
 
 
 def switchByTonari(father, mother, fp, mp, graph):
-    temp1 = father.genotype[:fp] + mother.genotype[mp:]
+    temp1 = father.genotype[:fp+1] + mother.genotype[mp:]
     t1 = individual()
     t1.start(temp1, graph)
     clearCircle(t1, graph)
@@ -321,9 +327,9 @@ def mutation(pop, graph, topy):
                 visited = i.genotype[index + 1:]
                 addcp = visited.copy()
                 path = dfsForMutation(gen, i.genotype[0], topy, visited, orilist, gen)
-                for p in addcp:
-                    path.append(p)
                 if path:
+                    for p in addcp:
+                        path.append(p)
                     newi = individual()
                     newi.start(path, graph)
                     newpop.append(newi)
