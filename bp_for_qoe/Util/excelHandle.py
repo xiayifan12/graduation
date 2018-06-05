@@ -6,16 +6,17 @@ import openpyxl
 @Function:提供excel相关接口功能，包括从excel中获取数据集，向excel写入权值矩阵,从excel读取权值
 
 '''
-DataSetPath = './static/1.xlsx'
 WidthPath = './static/save.xlsx'
 DataSetPathTest = '../static/2.xlsx'
 VernifiyPath = '../static/3.xlsx'
-SavePath = './bp_for_qoe/static/save1.xlsx'
+SavePath = './bp_for_qoe/static/save.xlsx'
+DataSetPath = './static/1.xlsx'
 SavePathTest = '../static/save3.xlsx'
+SavePathV = '../static/save.xlsx'
 
 
 def GetDataSetAndLabelsFormExcel():
-    workbook = xlrd.open_workbook(SavePath)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
+    workbook = xlrd.open_workbook(VernifiyPath)  # 通过xlrd打开excel文件，1.xlsx目前为测试文件
     sheet = workbook.sheet_by_index(0)  # 取excel文件的第一张表
     row = sheet.nrows  # 记录行列数
     casesRaw = []

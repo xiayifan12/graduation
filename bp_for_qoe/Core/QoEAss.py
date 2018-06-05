@@ -193,8 +193,6 @@ class BPNeuralNetwork:
             label = round(label, 2)
             if o == label:
                 right += 1
-        # right = 1652
-        # count = 2000
         p = right / count
         p = p * 100
         print("测试准确率：" + str(right) + "/" + str(count) + "----" + str(p) + "%")

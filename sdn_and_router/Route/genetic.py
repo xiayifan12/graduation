@@ -36,17 +36,18 @@ def genetic(graph, topy, src, dst):
     showlist = []
     for i in bestindivitions:
         showlist.append(i.phenotype)
-    print(max(showlist))
+    # print(max(showlist))
     sortkey = attrgetter('phenotype')
     bestindivitions.sort(key=sortkey, reverse=True)
-    print(bestindivitions[0].genotype)
-    plt.plot(showlist)
-    plt.title('Best QoE in pop')
-    plt.xlabel('pop_num')
-    plt.ylabel('QoE by MOS')
-    plt.ylim(4.000, 5.000)
-    plt.xlim(0, 50)
-    plt.show()
+    # print(bestindivitions[0].genotype)
+    # plt.plot(showlist)
+    # plt.title('Best QoE in pop')
+    # plt.xlabel('pop_num')
+    # plt.ylabel('QoE by MOS')
+    # plt.ylim(4.000, 5.000)
+    # plt.xlim(0, 50)
+    # plt.show()
+    return max(showlist)
 
 
 '''
